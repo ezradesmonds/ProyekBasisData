@@ -1,0 +1,45 @@
+<!--<?import javafx.scene.layout.BorderPane?>-->
+<!--<?import javafx.scene.control.TableColumn?>-->
+<!--<?import javafx.scene.control.Label?>-->
+<!--<?import javafx.scene.control.TableView?>-->
+<!--<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.katering.controller.AdminPusatController">-->
+<!--    <top>-->
+<!--        <Label text="Dashboard Admin Pusat" styleClass="title"/>-->
+<!--    </top>-->
+<!--    <center>-->
+<!--        <TableView fx:id="performTable">-->
+<!--            <columns>-->
+<!--                <TableColumn text="Cabang" fx:id="cabangCol"/>-->
+<!--                <TableColumn text="Jumlah Pesanan" fx:id="jumlahCol"/>-->
+<!--                <TableColumn text="Total Pendapatan" fx:id="pendapatanCol"/>-->
+<!--            </columns>-->
+<!--        </TableView>-->
+<!--    </center>-->
+<!--</BorderPane>-->
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.katering.controller.AdminPusatController">
+    <top>
+        <VBox spacing="10">
+            <Label text="Dashboard Admin Pusat" styleClass="title"/>
+            <HBox spacing="10">
+                <Button text="Tambah Promo" onAction="#tambahPromo"/>
+                <Button text="Kelola Diskon" onAction="#kelolaDiskon"/>
+                <Button text="Logout" onAction="#handleLogout"/>
+            </HBox>
+        </VBox>
+    </top>
+
+    <center>
+        <TableView fx:id="performTable">
+            <columns>
+                <TableColumn text="Cabang" fx:id="cabangCol"/>
+                <TableColumn text="Jumlah Pesanan" fx:id="jumlahCol"/>
+                <TableColumn text="Total Pendapatan" fx:id="pendapatanCol"/>
+            </columns>
+        </TableView>
+    </center>
+</BorderPane>

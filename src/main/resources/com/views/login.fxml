@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.katering.controller.LoginController"
+            prefWidth="400" prefHeight="500" stylesheets="@../../style/style.css"
+            styleClass="login-background">
+
+    <children>
+
+        <!-- Card Container -->
+        <AnchorPane fx:id="loginCard" layoutX="50" layoutY="70" prefWidth="300" prefHeight="360" styleClass="login-card">
+            <children>
+                <Label text="Login" layoutX="115" layoutY="20" styleClass="title"/>
+
+                <Label text="Username" layoutX="30" layoutY="80" />
+                <TextField fx:id="usernameField" layoutX="30" layoutY="100" prefWidth="240" />
+
+                <Label text="Password" layoutX="30" layoutY="150" />
+                <PasswordField fx:id="passwordField" layoutX="30" layoutY="170" prefWidth="240" />
+
+                <Label text="Role" layoutX="30" layoutY="220" />
+                <ComboBox fx:id="roleBox" layoutX="30" layoutY="240" prefWidth="240"/>
+
+                <Button text="Login" layoutX="90" layoutY="300" prefWidth="120" styleClass="login-button"
+                        onAction="#handleLogin"/>
+
+                <Label fx:id="errorLabel" layoutX="30" layoutY="340" styleClass="error-label"/>
+
+            </children>
+        </AnchorPane>
+    </children>
+</AnchorPane>

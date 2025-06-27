@@ -1,0 +1,61 @@
+<!--<?import javafx.scene.layout.BorderPane?>-->
+<!--<?import javafx.scene.control.TableView?>-->
+<!--<?import javafx.scene.control.Button?>-->
+<!--<?import javafx.scene.control.TableColumn?>-->
+<!--<?import javafx.scene.control.Label?>-->
+<!--<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.katering.controller.AdminCabangController">-->
+<!--    <top>-->
+<!--        <Label text="Dashboard Admin Cabang" styleClass="title"/>-->
+<!--    </top>-->
+<!--    <center>-->
+<!--        <TableView fx:id="pesananTable">-->
+<!--            <columns>-->
+<!--                <TableColumn text="ID Pesanan" fx:id="idCol"/>-->
+<!--                <TableColumn text="Nama Pelanggan" fx:id="namaCol"/>-->
+<!--                <TableColumn text="Status" fx:id="statusCol"/>-->
+<!--            </columns>-->
+<!--        </TableView>-->
+<!--    </center>-->
+<!--    <bottom>-->
+<!--        <Button text="Tandai Selesai" onAction="#prosesPesanan"/>-->
+<!--    </bottom>-->
+<!--</BorderPane>-->
+
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.katering.controller.AdminCabangController">
+    <top>
+        <VBox spacing="10">
+            <Label text="Dashboard Admin Cabang" styleClass="title"/>
+            <HBox spacing="10">
+                <Button text="Tambah Menu" onAction="#tambahMenu"/>
+                <Button text="Edit Menu" onAction="#editMenu"/>
+                <Button text="Hapus Menu" onAction="#hapusMenu"/>
+            </HBox>
+        </VBox>
+    </top>
+
+    <center>
+        <TableView fx:id="pesananTable">
+            <columns>
+                <TableColumn text="ID Pesanan" fx:id="idCol"/>
+                <TableColumn text="Nama Pelanggan" fx:id="namaCol"/>
+                <TableColumn text="Status" fx:id="statusCol"/>
+            </columns>
+        </TableView>
+    </center>
+
+    <bottom>
+        <HBox spacing="10">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <Button text="Tandai Selesai" onAction="#prosesPesanan"/>
+            <Button text="Jadwalkan Pengiriman" onAction="#jadwalPengiriman"/>
+            <Button text="Logout" onAction="#handleLogout"/>
+        </HBox>
+    </bottom>
+</BorderPane>
