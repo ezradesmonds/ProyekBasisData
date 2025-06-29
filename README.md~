@@ -182,11 +182,3 @@ INSERT INTO Jadwal_pengiriman (id_pengiriman, id_staf, waktu_kirim, alamat_pengi
 (3, 3, '2025-06-03 14:00:00', 'Jl. Kenanga No. 7, Bandung'),
 (4, 4, '2025-06-04 15:00:00', 'Jl. Dahlia No. 2, Yogyakarta'),
 (5, 5, '2025-06-05 16:00:00', 'Jl. Anggrek No. 4, Medan');
-
-
-ALTER TABLE Promo
-ADD COLUMN target_cabang_id INT REFERENCES Cabang(id_cabang) NULL,
-ADD COLUMN target_kategori VARCHAR(50) NULL;
-
--- Hapus tabel Promo_cabang karena sudah tidak diperlukan lagi
-DROP TABLE Promo_cabang;
