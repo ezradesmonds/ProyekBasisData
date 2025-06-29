@@ -49,13 +49,16 @@
             <HBox spacing="10" alignment="CENTER_LEFT">
                 <Button text="Tambah ke Keranjang" onAction="#tambahKeKeranjang" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;"/>
                 <Button text="Lihat Keranjang" onAction="#lihatKeranjang" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;"/>
+                <Button text="Checkout" onAction="#checkout" style="-fx-background-color: #FF5722; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;"/>
                 <Button text="Histori Pesanan" onAction="#lihatRiwayatPemesanan" style="-fx-background-color: #FFC107; -fx-text-fill: black; -fx-font-weight: bold; -fx-background-radius: 5;"/>
                 <Button text="Logout" onAction="#handleLogout" style="-fx-background-color: #9E9E9E; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;"/>
             </HBox>
             <HBox spacing="10" alignment="CENTER_LEFT">
-                <Button text="Daftar Akun Baru" onAction="#daftarAkun" style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;"/>
                 <Button text="Pantau Status Pesanan" onAction="#pantauStatus" style="-fx-background-color: #607D8B; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;"/>
-                <Button text="Beri Rating" onAction="#beriRating" style="-fx-background-color: #795548; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;"/>
+                <Button text="Beri Rating" onAction="#beriRatingDanKomentar" style="-fx-background-color: #795548; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;"/>
+                <Button text="Lihat Log Aktivitas" onAction="#lihatLogAktivitasSaya" style="-fx-background-color: #8BC34A; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;"/>
+                <!-- Tombol baru untuk Cek Promo -->
+                <Button text="Cek Promo" onAction="#checkPromo" style="-fx-background-color: #9C27B0; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;"/>
             </HBox>
         </VBox>
     </bottom>

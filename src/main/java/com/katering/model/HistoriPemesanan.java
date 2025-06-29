@@ -28,4 +28,10 @@ public class HistoriPemesanan {
     public void setJumlah(int jumlah) { this.jumlah = jumlah; }
     public void setTotal(int total) { this.total = total; }
     public void setWaktu(LocalDateTime waktu) { this.waktu = waktu; }
+
+    @Override
+    public String toString() {
+        // Ini adalah format yang akan ditampilkan di ChoiceDialog
+        return "ID Pesanan: " + id + " - Tanggal: " + waktu.toLocalDate() + " - Total: " + total;
+    }
 }
