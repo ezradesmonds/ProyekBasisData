@@ -13,11 +13,17 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.layout.GridPane;
 import java.io.IOException;
 import java.sql.*;
 import java.util.Optional;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import java.io.IOException;
 
 public class AdminCabangController {
 
@@ -319,6 +325,30 @@ public class AdminCabangController {
         }
     }
 
+    @FXML
+    private void jadwalPengiriman() {
+        try {
+            // Muat file FXML untuk popup
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/views/JadwalPengiriman.fxml"));
+            VBox page = loader.load();
+
+            // Buat Stage baru untuk popup
+            Stage popupStage = new Stage();
+            popupStage.setTitle("Jadwalkan Pengiriman");
+            popupStage.initModality(Modality.WINDOW_MODAL); // Blokir window utama saat popup terbuka
+            popupStage.initOwner(pesananTable.getScene().getWindow()); // Tentukan window pemiliknya
+
+            Scene scene = new Scene(page);
+            popupStage.setScene(scene);
+
+            // Tampilkan popup dan tunggu sampai ditutup
+            popupStage.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Gagal membuka form penjadwalan.").show();
+        }
+    }
 
     @FXML
     private void hapusMenu() {
@@ -352,11 +382,6 @@ public class AdminCabangController {
         }
     }
 
-
-    @FXML
-    private void jadwalPengiriman() {
-        new Alert(AlertType.INFORMATION, "Fitur penjadwalan pengiriman belum diimplementasikan.").show();
-    }
 
     @FXML
     private void handleLogout() {
