@@ -64,3 +64,119 @@
     -fx-font-weight: bold;
     -fx-text-fill: #333;
 }
+
+/* --- Global Variables --- */
+.root {
+    -fx-primary-color: #00796b; /* Teal */
+    -fx-secondary-color: #ff7043; /* Orange accent */
+    -fx-light-background-color: #f4f7f6;
+    -fx-dark-text-color: #333333;
+    -fx-light-text-color: #ffffff;
+}
+
+/* --- Main Layout --- */
+.dashboard-container {
+    -fx-background-color: -fx-light-background-color;
+}
+
+.header-pane {
+    -fx-background-color: -fx-primary-color;
+    -fx-padding: 15px 25px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 0, 3);
+}
+
+.header-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-light-text-color;
+}
+
+/* --- Sidebar --- */
+.sidebar {
+    -fx-background-color: #ffffff;
+    -fx-padding: 20px;
+    -fx-spacing: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 3, 0);
+}
+
+.sidebar-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-dark-text-color;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-alignment: center-left;
+    -fx-pref-width: 150px;
+    -fx-padding: 10px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+}
+
+.sidebar-button:hover {
+    -fx-background-color: -fx-light-background-color;
+}
+
+.sidebar-button-checkout {
+    -fx-background-color: -fx-secondary-color;
+    -fx-text-fill: -fx-light-text-color;
+}
+
+.sidebar-button-checkout:hover {
+    -fx-background-color: derive(-fx-secondary-color, -10%);
+}
+
+/* --- Content Area --- */
+.content-pane {
+    -fx-padding: 25px;
+}
+
+.menu-scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-border-color: transparent;
+}
+
+.menu-tile-pane {
+    -fx-hgap: 20;
+    -fx-vgap: 20;
+}
+
+.menu-card {
+    -fx-background-color: #ffffff;
+    -fx-padding: 15px;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
+    -fx-alignment: center;
+    -fx-spacing: 8px;
+    -fx-transition: all 0.2s ease-in-out;
+}
+
+.menu-card:hover {
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 15, 0, 0, 4);
+}
+
+.menu-card-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-primary-color;
+}
+
+.menu-card-details {
+    -fx-font-size: 13px;
+    -fx-text-fill: #666;
+}
+
+.add-to-cart-button {
+    -fx-background-color: -fx-primary-color;
+    -fx-text-fill: -fx-light-text-color;
+    -fx-background-radius: 20px;
+    -fx-padding: 5px 15px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.add-to-cart-button:hover {
+    -fx-background-color: derive(-fx-primary-color, -10%);
+}
