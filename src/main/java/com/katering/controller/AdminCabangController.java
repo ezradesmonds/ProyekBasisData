@@ -122,13 +122,13 @@ public class AdminCabangController {
     private void prosesPesanan() {
         Pesanan selected = pesananTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
-            String sql = "UPDATE Pemesanan SET id_status = (SELECT id_status FROM Status_pesanan WHERE status = 'Shipped') WHERE id_pemesanan = ?";
+            String sql = "UPDATE Pemesanan SET id_status = (SELECT id_status FROM Status_pesanan WHERE status = 'Processed') WHERE id_pemesanan = ?";
             try (Connection conn = DatabaseConnection.connect();
                  PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setInt(1, selected.getId());
                 stmt.executeUpdate();
                 loadPesanan();
-                new Alert(AlertType.INFORMATION, "Pesanan #" + selected.getId() + " telah diproses dan statusnya menjadi 'Shipped'.").show();
+                new Alert(AlertType.INFORMATION, "Pesanan #" + selected.getId() + " telah diproses dan statusnya menjadi 'Processed'.").show();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -141,7 +141,7 @@ public class AdminCabangController {
     private void updateStatusPesanan() {
         Pesanan selectedPesanan = pesananTable.getSelectionModel().getSelectedItem();
         if (selectedPesanan != null) {
-            ChoiceDialog<String> dialog = new ChoiceDialog<>("Processed", "Pending", "Shipped", "Delivered", "Cancelled");
+            ChoiceDialog<String> dialog = new ChoiceDialog<>("Processed", "Pending", "Processed", "Shipped", "Delivered", "Cancelled");
             dialog.setTitle("Update Status Pesanan");
             dialog.setHeaderText("Pilih status baru untuk pesanan ID: " + selectedPesanan.getId());
             dialog.setContentText("Status:");
