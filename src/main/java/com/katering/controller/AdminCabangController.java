@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
@@ -343,15 +344,32 @@ public class AdminCabangController {
 
     @FXML
     private void handleLogout() {
-        Session.getInstance().clear();
+        // --- KODE YANG DIPERBAIKI ---
+        if (Session.getInstance() != null) {
+            Session.getInstance().clear();
+        }
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/views/login.fxml"));
+
+            // 1. Muat FXML untuk mendapatkan Parent node (misal: AnchorPane)
+            Parent root = loader.load();
+
+            // 2. Buat Scene BARU dari Parent node tersebut
+            Scene scene = new Scene(root);
+
+            // 3. Dapatkan Stage saat ini dari komponen mana pun yang ada di scene
             Stage stage = (Stage) pesananTable.getScene().getWindow();
-            stage.setScene(loader.load());
+
+            // 4. Set Scene yang BARU ke Stage
+            stage.setScene(scene);
+
             stage.show();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+        // --- AKHIR DARI KODE YANG DIPERBAIKI ---
     }
 
     private String getNamaCabangById(int idCabang) {
