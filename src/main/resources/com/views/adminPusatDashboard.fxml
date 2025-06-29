@@ -15,7 +15,7 @@
             <HBox spacing="10">
                 <Button text="Lihat Daftar Pengguna" onAction="#lihatDaftarPengguna" style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;"/>
                 <Button text="Lihat Daftar Cabang" onAction="#lihatDaftarCabang" style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;"/>
-                <Button text="Tambah Promo" onAction="#tambahPromo" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;"/>
+<!--                <Button text="Tambah Promo" onAction="#tambahPromo" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;"/>-->
                 <Button text="Kelola Promo" onAction="#kelolaPromo" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;"/>
                 <Button text="Logout" onAction="#handleLogout" style="-fx-background-color: #9E9E9E; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;"/>
             </HBox>

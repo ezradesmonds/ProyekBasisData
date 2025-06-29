@@ -34,6 +34,8 @@ public class RegistrationController {
     @FXML
     private Label messageLabel;
 
+    // Lokasi: src/main/java/com/katering/controller/RegistrationController.java
+
     @FXML
     private void handleRegisterButton() {
         String nama = namaField.getText();
@@ -48,16 +50,19 @@ public class RegistrationController {
             return;
         }
 
-        // Di database Anda, tabel Pengguna tidak punya kolom alamat & telepon, jadi kita sesuaikan
-        // Kita akan masukkan nama ke kolom 'nama'
-        String sql = "INSERT INTO Pengguna (nama, username, password, id_role, id_cabang) VALUES (?, ?, ?, 1, CURRENT_DATE)";
+        // --- KODE YANG DIPERBAIKI ---
+        // Kita hanya akan insert kolom yang kita punya nilainya.
+        // id_role untuk 'Pelanggan' adalah 1.
+        String sql = "INSERT INTO Pengguna (nama, username, password, id_role) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.connect();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
+            // Set 4 parameter sesuai dengan jumlah '?'
             stmt.setString(1, nama);
             stmt.setString(2, username);
-            stmt.setString(3, password); // Ingat: simpan password sebagai plain text tidak aman!
+            stmt.setString(3, password);
+            stmt.setInt(4, 1); // id_role = 1 untuk Pelanggan
 
             int affectedRows = stmt.executeUpdate();
 
@@ -68,10 +73,16 @@ public class RegistrationController {
             }
 
         } catch (SQLException e) {
-            messageLabel.setText("Error: " + e.getMessage());
+            // Cek jika error karena username sudah ada
+            if (e.getSQLState().equals("23505")) { // 23505 adalah kode error untuk unique violation
+                messageLabel.setText("Error: Username '" + username + "' sudah digunakan. Pilih username lain.");
+            } else {
+                messageLabel.setText("Error: " + e.getMessage());
+            }
             messageLabel.setStyle("-fx-text-fill: red;");
             e.printStackTrace();
         }
+        // --- AKHIR DARI KODE YANG DIPERBAIKI ---
     }
 
     @FXML

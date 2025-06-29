@@ -266,8 +266,8 @@ public class UserDashboardController {
         for (DetailPemesanan item : keranjangList) {
             String namaMenu = getNamaMenuById(item.getIdMenu());
             int hargaMenu = getHargaMenuById(item.getIdMenu());
-            int subtotal = item.getJumlah() * hargaMenu; // Recalculate subtotal for safety
-            item.setSubtotal(subtotal); // Update subtotal in the cart item
+            int subtotal = item.getJumlah() * hargaMenu;
+            item.setSubtotal(subtotal);
             totalKeseluruhan += subtotal;
 
             grid.addRow(row++,
@@ -278,7 +278,7 @@ public class UserDashboardController {
             );
         }
 
-        // --- Logika diskon dimulai di sini ---
+        // --- LOGIKA DISKON YANG DIPERBAIKI ---
         String appliedPromoName = "Tidak ada";
         int discountAmount = 0;
         int finalTotalHarga = totalKeseluruhan;
@@ -287,48 +287,57 @@ public class UserDashboardController {
             int idCabangSaatIni = getIdCabangByName(cabangComboBox.getValue());
             LocalDate currentDate = LocalDate.now();
 
-            String sql = "SELECT p.nama_promo, p.diskon FROM Promo p " +
-                    "JOIN Promo_cabang pc ON p.id_promo = pc.id_promo " +
-                    "WHERE pc.id_cabang = ? AND p.tgl_mulai <= ? AND p.tgl_selesai >= ?";
+            // Query baru yang sesuai dengan struktur tabel Promo
+            String sql = "SELECT nama_promo, diskon, target_kategori FROM Promo " +
+                    "WHERE (tgl_mulai <= ? AND tgl_selesai >= ?) " +
+                    "AND (" +
+                    "   (target_cabang_id IS NULL AND target_kategori IS NULL) OR " +
+                    "   (target_cabang_id = ?) OR " +
+                    "   (target_kategori IS NOT NULL)" +
+                    ")";
 
             try (Connection conn = DatabaseConnection.connect();
                  PreparedStatement stmt = conn.prepareStatement(sql)) {
-                stmt.setInt(1, idCabangSaatIni);
+
+                stmt.setDate(1, Date.valueOf(currentDate));
                 stmt.setDate(2, Date.valueOf(currentDate));
-                stmt.setDate(3, Date.valueOf(currentDate));
+                stmt.setInt(3, idCabangSaatIni);
 
                 ResultSet rs = stmt.executeQuery();
-                int temp = 0;
 
+                // Cari diskon terbaik yang bisa diaplikasikan
                 while (rs.next()) {
                     String promoNama = rs.getString("nama_promo");
                     int diskonPercentage = rs.getInt("diskon");
+                    String targetKategori = rs.getString("target_kategori");
                     int currentPromoDiscount = 0;
 
-                    if (promoNama.equals("Diskon 10th Anniversary")) {
-                        if (totalKeseluruhan > 1000000) {
-                            currentPromoDiscount = (totalKeseluruhan * diskonPercentage) / 100;
+                    if (targetKategori != null) {
+                        // Jika promo berbasis kategori, hitung subtotal untuk kategori tersebut
+                        int subtotalKategori = 0;
+                        for (DetailPemesanan item : keranjangList) {
+                            if (getKategoriMenuById(item.getIdMenu()).equalsIgnoreCase(targetKategori)) {
+                                subtotalKategori += item.getSubtotal();
+                            }
                         }
-                    } else if (promoNama.equals("Diskon Tengah Bulan")) {
-                        if (totalKeseluruhan > 50000) {
-                            currentPromoDiscount = (totalKeseluruhan * diskonPercentage) / 100;
-                        }
-                    }
-                    else {
-
+                        currentPromoDiscount = (subtotalKategori * diskonPercentage) / 100;
+                    } else {
+                        // Jika promo umum (berlaku untuk semua atau cabang ini)
                         currentPromoDiscount = (totalKeseluruhan * diskonPercentage) / 100;
                     }
 
+                    // Ambil diskon terbesar
                     if (currentPromoDiscount > discountAmount) {
                         discountAmount = currentPromoDiscount;
                         appliedPromoName = promoNama;
-                        temp = diskonPercentage;
                     }
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
             new Alert(AlertType.ERROR, "Gagal memeriksa promo: " + e.getMessage()).show();
+            // Return agar tidak melanjutkan checkout jika ada error promo
+            return;
         }
 
         finalTotalHarga -= discountAmount;
@@ -339,11 +348,21 @@ public class UserDashboardController {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            processCheckout(finalTotalHarga); // Gunakan finalTotalHarga setelah diskon
+            processCheckout(finalTotalHarga);
             logAktivitas("User checked out a new order. Order total: " + finalTotalHarga + ". Promo applied: " + appliedPromoName);
         } else {
             new Alert(AlertType.INFORMATION, "Checkout dibatalkan.").show();
         }
+    }
+
+    // Tambahkan method helper baru ini di dalam UserDashboardController.java
+    private String getKategoriMenuById(int idMenu) {
+        for (Menu menu : menuList) { // Asumsi menuList sudah ter-load dengan benar
+            if (menu.getId() == idMenu) {
+                return menu.getKategori();
+            }
+        }
+        return ""; // Return string kosong jika tidak ketemu
     }
 
     private int getHargaMenuById(int idMenu) {
@@ -702,29 +721,43 @@ public class UserDashboardController {
 
     @FXML
     private void checkPromo() {
+        if (cabangComboBox.getValue() == null) {
+            new Alert(AlertType.WARNING, "Silakan pilih cabang terlebih dahulu.").show();
+            return;
+        }
+
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Promo Aktif");
-        alert.setHeaderText("Daftar Promo yang Sedang Berlaku:");
+        alert.setHeaderText("Daftar Promo yang Sedang Berlaku untuk Cabang " + cabangComboBox.getValue() + ":");
 
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(5);
-        grid.addRow(0, new Label("Nama Promo"), new Label("Deskripsi"), new Label("Diskon"), new Label("Tanggal Berlaku"));
+        grid.setPadding(new Insets(10));
+
+        // --- PERUBAHAN 1: Tambahkan header kolom "Diskon" ---
+        grid.addRow(0, new Label("Nama Promo"), new Label("Deskripsi"), new Label("Diskon"), new Label("Target"));
 
         int row = 1;
         try {
             int idCabangSaatIni = getIdCabangByName(cabangComboBox.getValue());
             LocalDate currentDate = LocalDate.now();
 
-            String sql = "SELECT p.nama_promo, p.deskripsi, p.diskon, p.tgl_mulai, p.tgl_selesai FROM Promo p " +
-                    "JOIN Promo_cabang pc ON p.id_promo = pc.id_promo " +
-                    "WHERE pc.id_cabang = ? AND p.tgl_mulai <= ? AND p.tgl_selesai >= ? ORDER BY p.tgl_selesai ASC";
+            String sql = "SELECT nama_promo, deskripsi, diskon, target_kategori " +
+                    "FROM Promo " +
+                    "WHERE (tgl_mulai <= ? AND tgl_selesai >= ?) " +
+                    "AND (" +
+                    "   (target_cabang_id IS NULL AND target_kategori IS NULL) OR " +
+                    "   (target_cabang_id = ?) OR " +
+                    "   (target_kategori IS NOT NULL)" +
+                    ") ORDER BY id_promo";
 
             try (Connection conn = DatabaseConnection.connect();
                  PreparedStatement stmt = conn.prepareStatement(sql)) {
-                stmt.setInt(1, idCabangSaatIni);
+
+                stmt.setDate(1, Date.valueOf(currentDate));
                 stmt.setDate(2, Date.valueOf(currentDate));
-                stmt.setDate(3, Date.valueOf(currentDate));
+                stmt.setInt(3, idCabangSaatIni);
 
                 ResultSet rs = stmt.executeQuery();
                 boolean promoFound = false;
@@ -732,28 +765,25 @@ public class UserDashboardController {
                     promoFound = true;
                     String namaPromo = rs.getString("nama_promo");
                     String deskripsi = rs.getString("deskripsi");
+                    String targetKategori = rs.getString("target_kategori");
+
+                    // --- PERUBAHAN 2: Ambil nilai diskon dan format teksnya ---
                     int diskon = rs.getInt("diskon");
-                    LocalDate tglMulai = rs.getDate("tgl_mulai").toLocalDate();
-                    LocalDate tglSelesai = rs.getDate("tgl_selesai").toLocalDate();
-
                     String diskonText = diskon + "%";
-                    if (namaPromo.equals("Promo Ulang Tahun")) {
-                        diskonText = "Gratis!";
+
+                    String targetText;
+                    if (targetKategori != null) {
+                        targetText = "Kategori: " + targetKategori;
+                    } else {
+                        targetText = "Semua Menu";
                     }
 
-                    String syaratTambahan = "";
-                    if (namaPromo.equals("Diskon 10th Anniversary")) {
-                        syaratTambahan = " (Belanja > Rp 1.000.000)";
-                    } else if (namaPromo.equals("Diskon Tengah Bulan")) {
-                        syaratTambahan = " (Belanja > Rp 50.000)";
-                    }
-
-
+                    // --- PERUBAHAN 3: Tambahkan Label diskon ke dalam baris ---
                     grid.addRow(row++,
                             new Label(namaPromo),
-                            new Label(deskripsi + syaratTambahan),
-                            new Label(diskonText),
-                            new Label(tglMulai.toString() + " s/d " + tglSelesai.toString())
+                            new Label(deskripsi),
+                            new Label(diskonText), // <-- Kolom baru ditambahkan di sini
+                            new Label(targetText)
                     );
                 }
 
@@ -767,10 +797,9 @@ public class UserDashboardController {
         }
 
         alert.getDialogPane().setContent(grid);
-        alert.getDialogPane().setPrefSize(700, 300); // Ukuran dialog disesuaikan
+        alert.getDialogPane().setPrefSize(700, 300);
         alert.showAndWait();
     }
-
 
     private void logAktivitas(String activity) {
         try (Connection conn = DatabaseConnection.connect();

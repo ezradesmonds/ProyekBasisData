@@ -1,5 +1,3 @@
--- Database 
-
 CREATE TABLE Role_pengguna (
 id_role SERIAL PRIMARY KEY,
 nama_role VARCHAR(50) NOT NULL
@@ -40,7 +38,7 @@ nama VARCHAR(100) NOT NULL,
 username VARCHAR(100) UNIQUE NOT NULL,
 password VARCHAR(100) NOT NULL,
 id_role INT REFERENCES Role_pengguna(id_role),
-id_cabang INT REFERENCES Cabang(id_cabang) -- Kolom id_cabang ditambahkan di sini
+id_cabang INT REFERENCES Cabang(id_cabang)
 );
 
 CREATE TABLE Menu (
@@ -96,9 +94,6 @@ waktu_kirim TIMESTAMP NOT NULL,
 alamat_pengiriman VARCHAR(255) NOT NULL
 );
 
-
--- Sisipkan Data Awal
-
 INSERT INTO Role_pengguna (id_role, nama_role) VALUES
 (1, 'Pelanggan'),
 (2, 'Admin Cabang'),
@@ -123,7 +118,9 @@ INSERT INTO Promo (nama_promo, deskripsi, diskon, tgl_mulai, tgl_selesai) VALUES
 ('Promo Akhir Pekan', 'Diskon 15% untuk minuman', 15, '2025-06-05', '2025-06-07'),
 ('Promo Ulang Tahun', 'Gratis menu untuk pelanggan yang berulang tahun', 100, '2025-06-01', '2025-06-30'),
 ('Promo Hari Kemerdekaan', 'Diskon 20% untuk semua pesanan', 20, '2025-08-17', '2025-08-17'),
-('Diskon Tengah Bulan', 'Diskon 5% untuk pesanan di atas 50k', 5, '2025-06-15', '2025-06-20');
+('Diskon Tengah Bulan', 'Diskon 5% untuk pesanan di atas 50k', 5, '2025-06-15', '2025-06-20'),
+('Diskon Tengah Tahun', 'Diskon 7% untuk pelanggan tercinta', 8, '2025-06-29', '2025-07-29'),
+('Diskon 10th Anniversary', 'Diskon 10% untuk pelanggan setia katering', 10, '2025-07-01', '2025-12-01');
 
 INSERT INTO Staf (nama_staf, jabatan) VALUES
 ('Hendra', 'Manager'),
@@ -134,11 +131,11 @@ INSERT INTO Staf (nama_staf, jabatan) VALUES
 
 -- Sisipkan data Pengguna dengan id_cabang yang sesuai untuk Admin Cabang
 INSERT INTO Pengguna (nama, username, password, id_role, id_cabang) VALUES
-('John Doe', 'john', 'password123', 2, 1),   -- Admin Cabang untuk Cabang Utama (ID 1)
-('Jane Smith', 'jane', 'securepass', 2, 2),  -- Admin Cabang untuk Cabang Timur (ID 2)
-('Alice Johnson', 'alice', '12345abc', 1, NULL), -- Pelanggan, id_cabang null
-('Bob Brown', 'bob', 'qwerty123', 1, NULL),   -- Pelanggan, id_cabang null
-('Charlie White', 'charlie', 'pass123', 3, NULL); -- Admin Pusat, id_cabang null
+('John Doe', 'john', 'password123', 2, 1),
+('Jane Smith', 'jane', 'securepass', 2, 2),
+('Alice Johnson', 'alice', '12345abc', 1, NULL),
+('Bob Brown', 'bob', 'qwerty123', 1, NULL),
+('Charlie White', 'charlie', 'pass123', 3, NULL);
 
 INSERT INTO Menu (nama_menu, deskripsi, harga, kategori, stok, tersedia, id_cabang) VALUES
 ('Nasi Goreng Spesial', 'Nasi goreng dengan ayam, telur, dan kerupuk', 25000, 'Makanan', 50, TRUE, 1),
@@ -161,7 +158,9 @@ INSERT INTO Promo_cabang (id_promo, id_cabang) VALUES
 (2, 2),
 (3, 3),
 (4, 4),
-(5, 5);
+(5, 5),
+(6, 1), -- Promo baru 'Diskon Tengah Tahun' untuk Cabang Utama
+(7, 2); -- Promo baru 'Diskon 10th Anniversary' untuk Cabang Timur
 
 INSERT INTO Pemesanan (id_pengguna, id_status, id_cabang, tgl_pesan, total_harga, id_review, rating, komentar, tgl_review) VALUES
 (1, 1, 1, '2025-06-01', 75000, 1, 5, 'Pelayanan memuaskan', '2025-06-02'),
