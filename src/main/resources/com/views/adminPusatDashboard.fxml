@@ -7,7 +7,10 @@
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.katering.controller.AdminPusatController"
             prefHeight="600.0" prefWidth="800.0">
     <top>
-        <VBox spacing="10" alignment="CENTER_LEFT" BorderPane.margin="10.0">
+        <VBox spacing="10" alignment="CENTER_LEFT">
+            <BorderPane.margin>
+                <Insets top="10.0" right="10.0" bottom="10.0" left="10.0"/>
+            </BorderPane.margin>
             <Label text="Dashboard Admin Pusat" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
             <HBox spacing="10">
                 <Button text="Lihat Daftar Pengguna" onAction="#lihatDaftarPengguna" style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;"/>
