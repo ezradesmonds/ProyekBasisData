@@ -1,44 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.shape.Rectangle?>
-<?import javafx.scene.effect.DropShadow?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.katering.controller.LoginController"
-            prefWidth="400" prefHeight="500" stylesheets="@../../style/style.css"
-            styleClass="login-background">
-
+<AnchorPane prefHeight="500.0" prefWidth="400.0" styleClass="login-background" stylesheets="@../../style/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.katering.controller.LoginController">
     <children>
-
-        <!-- Card Container -->
-        <AnchorPane fx:id="loginCard" layoutX="50" layoutY="70" prefWidth="300" prefHeight="360" styleClass="login-card">
+        <AnchorPane fx:id="loginCard" layoutX="50.0" layoutY="60.0" prefHeight="380.0" prefWidth="300.0" styleClass="login-card">
             <children>
-                <Label text="Login" layoutX="115" layoutY="20" styleClass="title"
-                       style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #333;"/>
-
-                <Label text="Username" layoutX="30" layoutY="80" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
-                <TextField fx:id="usernameField" layoutX="30" layoutY="100" prefWidth="240" styleClass="text-field"
-                           promptText="Enter your username"/>
-
-                <Label text="Password" layoutX="30" layoutY="150" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
-                <PasswordField fx:id="passwordField" layoutX="30" layoutY="170" prefWidth="240" styleClass="text-field"
-                               promptText="Enter your password"/>
-
-                <Label text="Role" layoutX="30" layoutY="220" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
-                <ComboBox fx:id="roleBox" layoutX="30" layoutY="240" prefWidth="240" styleClass="combo-box"/>
-
-                <Button text="Login" layoutX="90" layoutY="300" prefWidth="120" styleClass="login-button"
-                        onAction="#handleLogin"
-                        style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;"/>
-
-                <Label fx:id="errorLabel" layoutX="30" layoutY="340" styleClass="error-label"
-                       style="-fx-text-fill: red; -fx-font-weight: bold;"/>
-
+                <Label layoutX="121.0" layoutY="25.0" styleClass="title" text="Login" />
+                <Label layoutX="35.0" layoutY="90.0" text="Username" />
+                <TextField fx:id="usernameField" layoutX="35.0" layoutY="112.0" prefWidth="230.0" promptText="Enter your username" styleClass="text-field" />
+                <Label layoutX="35.0" layoutY="160.0" text="Password" />
+                <PasswordField fx:id="passwordField" layoutX="35.0" layoutY="182.0" prefWidth="230.0" promptText="Enter your password" styleClass="text-field" />
+                <Label layoutX="35.0" layoutY="230.0" text="Role" />
+                <ComboBox fx:id="roleBox" layoutX="35.0" layoutY="252.0" prefWidth="230.0" styleClass="combo-box">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Pelanggan" />
+                            <String fx:value="Admin Cabang" />
+                            <String fx:value="Admin Pusat" />
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+                <Button layoutX="85.0" layoutY="310.0" onAction="#handleLogin" prefWidth="130.0" styleClass="login-button" text="Login" />
+                <Hyperlink layoutX="62.0" layoutY="350.0" onAction="#handleRegisterLink" text="Don't have an account? Register" />
+                <Label fx:id="errorLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="15.0" layoutY="60.0" prefWidth="270.0" styleClass="error-label" textAlignment="CENTER" />
             </children>
         </AnchorPane>
     </children>

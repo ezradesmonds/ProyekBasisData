@@ -38,10 +38,31 @@ public class LoginController {
     @FXML
     private AnchorPane loginCard;
 
+//    @FXML
+//    public void initialize() {
+//        roleBox.getItems().addAll("Pelanggan", "Admin Cabang", "Admin Pusat");
+//        animateLoginCard();
+//    }
+
+
     @FXML
-    public void initialize() {
-        roleBox.getItems().addAll("Pelanggan", "Admin Cabang", "Admin Pusat");
-        animateLoginCard();
+    private void handleRegisterLink() {
+        try {
+            // Muat FXML untuk jendela registrasi
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/views/registration.fxml"));
+
+            // Dapatkan stage saat ini dari elemen apapun di scene login
+            Stage stage = (Stage) loginCard.getScene().getWindow();
+
+            // Buat scene baru dan tampilkan
+            Scene scene = new Scene(loader.load());
+            stage.setScene(scene);
+            stage.setTitle("Registrasi Pelanggan Baru");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showError("Gagal membuka halaman registrasi.");
+        }
     }
 
     @FXML
