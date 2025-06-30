@@ -27,6 +27,7 @@
                 <Button onAction="#kelolaPromo" styleClass="admin-sidebar-button" text="Kelola Promo" />
                 <Button onAction="#lihatDaftarPengguna" styleClass="admin-sidebar-button" text="Lihat Pengguna" />
                 <Button onAction="#lihatDaftarCabang" styleClass="admin-sidebar-button" text="Lihat Cabang" />
+                <Button onAction="#handleRegisterAdminCabang" styleClass="admin-sidebar-button" text="Register Admin Cabang" />
                 <Button onAction="#handleLogout" styleClass="admin-sidebar-button" text="Logout">
                     <VBox.margin>
                         <Insets top="50.0" />
@@ -38,7 +39,7 @@
     <center>
         <VBox styleClass="admin-content-pane" spacing="10.0" BorderPane.alignment="CENTER">
             <children>
-                <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Performa Semua Cabang" />
+                <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="LAPORAN Performa Semua Cabang" />
                 <TableView fx:id="performTable" VBox.vgrow="ALWAYS">
                     <columns>
                         <TableColumn fx:id="cabangCol" prefWidth="250.0" text="Nama Cabang" />

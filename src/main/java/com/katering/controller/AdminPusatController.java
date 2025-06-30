@@ -160,6 +160,20 @@ public class AdminPusatController {
         }
     }
 
+    @FXML
+    private void handleRegisterAdminCabang() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/views/AdminCabangRegistration.fxml"));
+            Stage stage = new Stage();
+            stage.setTitle("Registrasi Admin Cabang Baru");
+            stage.setScene(new Scene(loader.load()));
+            stage.showAndWait(); // Gunakan showAndWait agar jendela utama tidak bisa di-klik
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Gagal membuka jendela registrasi.").show();
+        }
+    }
 
     @FXML
     private void handleLogout() {

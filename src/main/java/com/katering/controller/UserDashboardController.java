@@ -210,25 +210,77 @@ public class UserDashboardController {
             return;
         }
 
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("Isi Keranjang");
-        alert.setHeaderText("Daftar Item di Keranjang Anda:");
+        Dialog<Void> dialog = new Dialog<>();
+        dialog.setTitle("Isi Keranjang");
+        dialog.setHeaderText("Daftar Item di Keranjang Anda:");
 
+        dialog.getDialogPane().setContent(buildKeranjangGrid(dialog));
+        dialog.getDialogPane().getButtonTypes().add(new ButtonType("Tutup", ButtonBar.ButtonData.CANCEL_CLOSE));
+        dialog.showAndWait();
+    }
+
+    private GridPane buildKeranjangGrid(Dialog<Void> dialog) {
         GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(5);
-        grid.addRow(0, new Label("Nama Menu"), new Label("Jumlah"), new Label("Subtotal"));
+        grid.setHgap(15);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20));
 
+        grid.addRow(0, new Label("Nama Menu"), new Label("Jumlah"), new Label("Subtotal"), new Label("Aksi"));
+
+        Label totalHargaKeranjangLabel = new Label();
         int row = 1;
-        int totalHargaKeranjang = 0;
+
         for (DetailPemesanan item : keranjangList) {
             String namaMenu = getNamaMenuById(item.getIdMenu());
-            grid.addRow(row++, new Label(namaMenu), new Label(String.valueOf(item.getJumlah())), new Label(String.valueOf(item.getSubtotal())));
-            totalHargaKeranjang += item.getSubtotal();
+            int hargaMenu = getHargaMenuById(item.getIdMenu());
+
+            Label subtotalLabel = new Label(String.valueOf(item.getSubtotal()));
+
+            // Menggunakan Spinner untuk mengubah jumlah
+            Spinner<Integer> quantitySpinner = new Spinner<>(1, 100, item.getJumlah());
+            quantitySpinner.setPrefWidth(70);
+            quantitySpinner.valueProperty().addListener((obs, oldValue, newValue) -> {
+                item.setJumlah(newValue);
+                int newSubtotal = newValue * hargaMenu;
+                item.setSubtotal(newSubtotal);
+                subtotalLabel.setText(String.valueOf(newSubtotal));
+                updateTotalKeranjang(totalHargaKeranjangLabel);
+            });
+
+            Button hapusButton = new Button("Hapus");
+            hapusButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white;");
+            hapusButton.setOnAction(e -> {
+                keranjangList.remove(item);
+                dialog.getDialogPane().setContent(buildKeranjangGrid(dialog)); // Rebuild grid
+            });
+
+            grid.addRow(row++, new Label(namaMenu), quantitySpinner, subtotalLabel, hapusButton);
         }
-        grid.addRow(row, new Label(""), new Label("Total:"), new Label(String.valueOf(totalHargaKeranjang)));
-        alert.getDialogPane().setContent(grid);
-        alert.showAndWait();
+
+        Label totalLabel = new Label("Total:");
+        totalLabel.setStyle("-fx-font-weight: bold;");
+        grid.add(totalLabel, 1, row);
+        grid.add(totalHargaKeranjangLabel, 2, row);
+
+        updateTotalKeranjang(totalHargaKeranjangLabel);
+
+        if (keranjangList.isEmpty()) {
+            grid.getChildren().clear();
+            grid.add(new Label("Keranjang Anda sekarang kosong."), 0, 0, 4, 1);
+        }
+
+        return grid;
+    }
+
+    /**
+     * Helper method untuk mengupdate total harga di keranjang.
+     */
+    private void updateTotalKeranjang(Label totalLabel) {
+        int total = 0;
+        for (DetailPemesanan item : keranjangList) {
+            total += item.getSubtotal();
+        }
+        totalLabel.setText("Rp " + total);
     }
 
     @FXML
